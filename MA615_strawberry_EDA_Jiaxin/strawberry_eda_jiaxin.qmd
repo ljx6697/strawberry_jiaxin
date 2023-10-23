@@ -2,110 +2,110 @@
 title: "Stawberries: exploratory data analysis"
 author: Jiaxin Li(U77902942)
 date: 2023 Oct 21
-format: html
+format: pdf
 engine: knitr
 editor: 
   markdown: 
     wrap: 72
 ---
 
-# Assignment
+<!-- # Assignment -->
 
-Using our class discussions and this document as a starting point,
-produce an EDA report. The report should describe the data itself so
-that readers understand the data sources used in the report and how you
-cleaned and organized the data for analysis.
+<!-- Using our class discussions and this document as a starting point, -->
+<!-- produce an EDA report. The report should describe the data itself so -->
+<!-- that readers understand the data sources used in the report and how you -->
+<!-- cleaned and organized the data for analysis. -->
 
-The sections below suggest how the report might be organized. The report
-should be succinct, communicating the information that you believe will
-be helpful to someone doing a fuller analysis of the data or using the
-data for model building. Implementation details should be included in
-commentary that is included in code.
+<!-- The sections below suggest how the report might be organized. The report -->
+<!-- should be succinct, communicating the information that you believe will -->
+<!-- be helpful to someone doing a fuller analysis of the data or using the -->
+<!-- data for model building. Implementation details should be included in -->
+<!-- commentary that is included in code. -->
 
-Sections of the document as it was originally presented in class have
-been commented so that you can see them in the code.
+<!-- Sections of the document as it was originally presented in class have -->
+<!-- been commented so that you can see them in the code. -->
 
-## Data acquisition and assessment
+<!-- ## Data acquisition and assessment -->
 
--   Data sources\
--   Assumptions and motivations
+<!-- -   Data sources\ -->
+<!-- -   Assumptions and motivations -->
 
-## Data cleaning and organization
+<!-- ## Data cleaning and organization -->
 
-Outline the approach taked to clean and organize the data.
+<!-- Outline the approach taked to clean and organize the data. -->
 
-## References
+<!-- ## References -->
 
-### Material about strawberries
+<!-- ### Material about strawberries -->
 
-[WHO says strawberries may not be so safe for
-you--2017March16](https://med.news.am/eng/news/13621/who-says-strawberries-may-not-be-so-safe-for-you.html)
+<!-- [WHO says strawberries may not be so safe for -->
+<!-- you--2017March16](https://med.news.am/eng/news/13621/who-says-strawberries-may-not-be-so-safe-for-you.html) -->
 
-[Pesticides + poison gases = cheap, year-round strawberries
-2019March20](https://www.ewg.org/foodnews/strawberries.php)
+<!-- [Pesticides + poison gases = cheap, year-round strawberries -->
+<!-- 2019March20](https://www.ewg.org/foodnews/strawberries.php) -->
 
-[Multistate Outbreak of Hepatitis A Virus Infections Linked to Fresh
-Organic
-Strawberries-2022March5](https://www.cdc.gov/hepatitis/outbreaks/2022/hav-contaminated-food/index.htm)
+<!-- [Multistate Outbreak of Hepatitis A Virus Infections Linked to Fresh -->
+<!-- Organic -->
+<!-- Strawberries-2022March5](https://www.cdc.gov/hepatitis/outbreaks/2022/hav-contaminated-food/index.htm) -->
 
-[Strawberry makes list of cancer-fighting
-foods-2023May31](https://issuu.com/mechlocal/docs/053123_mech_asf/s/25386339)
+<!-- [Strawberry makes list of cancer-fighting -->
+<!-- foods-2023May31](https://issuu.com/mechlocal/docs/053123_mech_asf/s/25386339) -->
 
-### Technical references
+<!-- ### Technical references -->
 
-In their handbook ["An introduction to data cleaning with R" by Edwin de
-Jonge and Mark van der
-Loo](https://cran.r-project.org/doc/contrib/de_Jonge+van_der_Loo-Introduction_to_data_cleaning_with_R.pdf),
-de Jonge and van der Loo go into detail about specific data cleaning
-isssues and how to handle them in R.
+<!-- In their handbook ["An introduction to data cleaning with R" by Edwin de -->
+<!-- Jonge and Mark van der -->
+<!-- Loo](https://cran.r-project.org/doc/contrib/de_Jonge+van_der_Loo-Introduction_to_data_cleaning_with_R.pdf), -->
+<!-- de Jonge and van der Loo go into detail about specific data cleaning -->
+<!-- isssues and how to handle them in R. -->
 
-["Problems, Methods, and Challenges in Comprehensive Data Cleansing" by
-Heiko Müller and Johann-Christoph
-Freytag](https://www.researchgate.net/profile/Heiko-Mueller/publication/228929938_Problems_methods_and_challenges_in_comprehensive_data_cleansing/links/09e415101b58541e2c000000/Problems-methods-and-challenges-in-comprehensive-data-cleansing.pdf)
-is a good companion to the de Jonge and van der Loo handbook, offering
-additional insights.
+<!-- ["Problems, Methods, and Challenges in Comprehensive Data Cleansing" by -->
+<!-- Heiko Müller and Johann-Christoph -->
+<!-- Freytag](https://www.researchgate.net/profile/Heiko-Mueller/publication/228929938_Problems_methods_and_challenges_in_comprehensive_data_cleansing/links/09e415101b58541e2c000000/Problems-methods-and-challenges-in-comprehensive-data-cleansing.pdf) -->
+<!-- is a good companion to the de Jonge and van der Loo handbook, offering -->
+<!-- additional insights. -->
 
-## Initial questions
+<!-- ## Initial questions -->
 
--   Initial questions about strawberries, the data, and about the work
-    you are undertaking.
+<!-- -   Initial questions about strawberries, the data, and about the work -->
+<!--     you are undertaking. -->
 
-The questions: (1) What is the degree of harmfulness of each chemical,
-which chemicals are more harmful and which are relatively harmless? (2)
-How are strawberries sold in different states and in different years?
-What about the use of chemicals? (3) Whether there is a correlation
-between different variables, e.g., whether strawberry sales are related
-to the year or the state in which they are located, etc.
+<!-- The questions: (1) What is the degree of harmfulness of each chemical, -->
+<!-- which chemicals are more harmful and which are relatively harmless? (2) -->
+<!-- How are strawberries sold in different states and in different years? -->
+<!-- What about the use of chemicals? (3) Whether there is a correlation -->
+<!-- between different variables, e.g., whether strawberry sales are related -->
+<!-- to the year or the state in which they are located, etc. -->
 
-## The data
+<!-- ## The data -->
 
-Describe the source and original condition of the data: organization,
-problems with the data that needed to be addressed and so on. Cite data
-sources.
+<!-- Describe the source and original condition of the data: organization, -->
+<!-- problems with the data that needed to be addressed and so on. Cite data -->
+<!-- sources. -->
 
-The data set for this assignment has been selected from:
-[USDA_NASS](https://quickstats.nass.usda.gov) <br> The data have been
-stored on NASS here:
-[USDA_NASS_strawb_2023SEP19](https://quickstats.nass.usda.gov/results/45FBC825-B104-38E2-9802-839F5F3C7036)
+<!-- The data set for this assignment has been selected from: -->
+<!-- [USDA_NASS](https://quickstats.nass.usda.gov) <br> The data have been -->
+<!-- stored on NASS here: -->
+<!-- [USDA_NASS_strawb_2023SEP19](https://quickstats.nass.usda.gov/results/45FBC825-B104-38E2-9802-839F5F3C7036) -->
 
-Make relevant observations in the document and in your code about data.
-Add commentary to the code so that anthoer analysts could use or extend
-your code.
+<!-- Make relevant observations in the document and in your code about data. -->
+<!-- Add commentary to the code so that anthoer analysts could use or extend -->
+<!-- your code. -->
 
-Discusss missing data, inclding how you handled it. Be careful to point
-out where NA's are being produced during processing and are not data
-missing in the original data.
+<!-- Discusss missing data, inclding how you handled it. Be careful to point -->
+<!-- out where NA's are being produced during processing and are not data -->
+<!-- missing in the original data. -->
 
-Where it is relevant, include information of how you have organized the
-data for analysis. It might, for example, be helpful to know that there
-is both agricultural census data and survey data. It might be helpful to
-discuss data that appears to be redundant between these two sources.
+<!-- Where it is relevant, include information of how you have organized the -->
+<!-- data for analysis. It might, for example, be helpful to know that there -->
+<!-- is both agricultural census data and survey data. It might be helpful to -->
+<!-- discuss data that appears to be redundant between these two sources. -->
 
-Make sure you include details in your discussion and in your code about
-other data and information you used in your work. Cite sources and
-provide detail that would allow another analyst to reproduce your work.
+<!-- Make sure you include details in your discussion and in your code about -->
+<!-- other data and information you used in your work. Cite sources and -->
+<!-- provide detail that would allow another analyst to reproduce your work. -->
 
-```{r}
+```{r, include=FALSE}
 #| label: Load libraries
 #| warning: false
 #| message: false
@@ -119,7 +119,7 @@ library(stringr)
 
 <!-- Read the file -->
 
-```{r warning=FALSE, message=FALSE}
+```{r warning=FALSE, message=FALSE, include=FALSE}
 #| label: read data - glimpse 
 #| warning: false
 #| message: false
@@ -131,7 +131,7 @@ strawberry <- read_csv("strawberry(2).csv", col_names = TRUE)
 
 ```
 
-```{r}
+```{r, include=FALSE}
 #| label: drop one-item columns
 #| echo: false
 
@@ -173,7 +173,7 @@ strawberry <- strawberry |> select(!all_of(str))
 
 <!-- Glimpse of strawberry data after dropping single-value columns. -->
 
-```{r}
+```{r, include=FALSE}
 #| label: glimpse of strawberry data
 #| echo: false
 
@@ -185,7 +185,7 @@ strawberry <- strawberry |> select(!all_of(str))
 
 <!-- ### Is every line associated with a state? -->
 
-```{r}
+```{r, include=FALSE}
 #| label: examine rows
 #| echo: false
 
@@ -205,7 +205,7 @@ state_all <- strawberry |> group_by(State) |> count()
 
 <!-- ### Which state has the most rows? -->
 
-```{r}
+```{r, include=FALSE}
 #| label: which state has the most rows
 #| echo: false
 
@@ -219,7 +219,7 @@ state_max <- state_all$State[which(state_all$n ==  max(state_all$n)  )]
 
 <!-- ## Examine California data -->
 
-```{r}
+```{r, include=FALSE}
 #| label: examine California data
 #| echo: false
 
@@ -254,7 +254,7 @@ survey_col <- colnames(calif_survey)
 
 <!-- SURVEY data frame splitting the marketing, and production data from the chemical application data. -->
 
-```{r}
+```{r, include=FALSE}
 #| label: split srawberry into census and survey pieces
 #| echo: false
 
@@ -285,7 +285,7 @@ rm(calif_census, calif_survey, state_all)
 
 <!-- ### Separate `Data Item` into columns by "," -->
 
-```{r}
+```{r, include=FALSE}
 #| label: split Data Item
 #| echo: false
 
@@ -436,7 +436,7 @@ strwb_census$temp3 <- str_trim(strwb_census$temp3, side = "both")
 
 <!-- ## Create a "Fresh Market" column -->
 
-```{r}
+```{r, include=FALSE}
 #| label: create a fresh market column
 #| echo: false
 #| eval: true
@@ -467,7 +467,7 @@ strwb_census$`Fresh Market` <- strwb_census$`Fresh Market` |> str_replace("^FRES
 
 <!-- ## Create a "Process Market" column -->
 
-```{r}
+```{r, include=FALSE}
 #| label: make process market column
 #| echo: false
 
@@ -491,7 +491,7 @@ strwb_census$`Process Market` <-  strwb_census$`Process Market` |> str_replace("
 
 <!-- Remove NA's from prop_acct, temp2, and temp3 -->
 
-```{r}
+```{r, include=FALSE}
 #| label: remove NAs
 #| echo: false
 
@@ -513,7 +513,7 @@ strwb_census$temp3[is.na(strwb_census$temp3)] <- ""
 
 <!-- relocate columns -->
 
-```{r}
+```{r, include=FALSE}
 #| label: final cleanup
 #| echo: false
 
@@ -538,7 +538,7 @@ strwb_census <- strwb_census |> rename(Totals = prop_acct)
 
 <!-- ## The Value column transformation -->
 
-```{r}
+```{r, include=FALSE}
 #| label: define functions dcomma and footnote finder
 #| echo: false
 #| warning: false
@@ -665,7 +665,7 @@ v_trns <- dcomma(v)
 
 <!-- ## plots   -->
 
-```{r}
+```{r, include=FALSE}
 #| label: plot 1
 #| echo: false
 #| eval: false
@@ -687,7 +687,7 @@ title ="Number of Organic Strawberry operations with Sales in 2021")
 
 ```
 
-```{r}
+```{r, include=FALSE}
 #| label: plot 2
 #| echo: false
 #| eval: false
@@ -715,13 +715,13 @@ title ="Organic Strawberry Sales ($) in 2021")
 
 ```
 
-## EDA
+## Jiaxin's EDA for strawberry data
 
-Once the data has been cleaned and organized, you must conduct your own
-EDA. Be sure to include a discussion of your analysis of the chemical
-information, including citations for data and other information you have
-used. Visualizations should play a key role in your analysis. Plots
-should be labeled and captioned.
+<!-- Once the data has been cleaned and organized, you must conduct your own -->
+<!-- EDA. Be sure to include a discussion of your analysis of the chemical -->
+<!-- information, including citations for data and other information you have -->
+<!-- used. Visualizations should play a key role in your analysis. Plots -->
+<!-- should be labeled and captioned. -->
 
 <!-- ## chemicals -->
 
@@ -767,7 +767,7 @@ should be labeled and captioned.
 
 <!-- ## Clean and organize strwb_survey -->
 
-```{r}
+```{r, include=FALSE}
 #| label: strwb_survey preliminary exploration
 #| echo: false
 #| eval: true
@@ -802,7 +802,7 @@ should be labeled and captioned.
 
 <!-- ### Period -->
 
-```{r}
+```{r, include=FALSE}
 #| label: period column 
 #| echo: false
 
@@ -823,7 +823,7 @@ per_c <- unlist(per_c)
 
 <!-- data item -->
 
-```{r}
+```{r, include=FALSE}
 #| label: data item analysis
 #| echo: false
 
@@ -873,7 +873,7 @@ a <- strwb_survey |> distinct(temp1a)
 
 <!-- Domain -->
 
-```{r}
+```{r, include=FALSE}
 #| label: domain
 #| echo: false
 #| eval: true
@@ -904,7 +904,7 @@ t23 <- unique(strwb_survey$temp23)
 
 <!-- Domain Category -->
 
-```{r}
+```{r, include=FALSE}
 #| label: Domain Category
 #| echo: false
 #| eval: true
@@ -936,7 +936,7 @@ strwb_survey_mkt <- strwb_survey |> filter(!((temp22 == "CHEMICAL") | (temp42 ==
 
 <!-- drop 1-value columns strawberry chems  -->
 
-```{r}
+```{r, include=FALSE}
 #| label: 1-value cols
 #| echo: false
 #| eval: true
