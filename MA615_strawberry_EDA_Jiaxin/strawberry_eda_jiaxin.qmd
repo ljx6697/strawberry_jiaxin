@@ -1,7 +1,7 @@
 ---
-title: "Stawberries: exploratory data analysis"
+title: "Strawberries: exploratory data analysis"
 author: Jiaxin Li(U77902942)
-date: 2023 Oct 21
+date: 2023 Oct 23
 format: pdf
 engine: knitr
 editor: 
@@ -717,10 +717,16 @@ title ="Organic Strawberry Sales ($) in 2021")
 
 ## Jiaxin's EDA for strawberry data
 
-<!-- Once the data has been cleaned and organized, you must conduct your own -->
-<!-- EDA. Be sure to include a discussion of your analysis of the chemical -->
-<!-- information, including citations for data and other information you have -->
-<!-- used. Visualizations should play a key role in your analysis. Plots -->
+## Initial questions:
+
+Initial questions about strawberries, the data, and about the work:
+ The questions: 
+ 
+ (1) What is the degree of harmfulness of each chemical, which chemicals are more harmful and which are relatively harmless? 
+ 
+ (2) How are strawberries sold in different states and in different years? What about the use of chemicals? 
+ 
+ (3) Whether there is a correlation between different variables, e.g., whether strawberry sales are related to the year or the state in which they are located, etc. 
 <!-- should be labeled and captioned. -->
 
 <!-- ## chemicals -->
@@ -973,7 +979,11 @@ strwb_survey_mkt <- strwb_survey_mkt |> select(all_of(mkt1))
 
 </p>
 
-### These references have been left in the document to help while you are writing. Cite those you use and drop the rest from the final document.
+
+## References 
+
+### Here are references that helps me while I'm writing. 
+(Besides, thanks for Aidan's help about understanding variables, dealing with missing values, etc.)
 
 [NASS help](https://quickstats.nass.usda.gov/tutorials)
 
@@ -1005,11 +1015,13 @@ dashboard](https://comptox.epa.gov/dashboard/chemical/details/DTXSID0020315)
 
 [pubChem](https://pubchem.ncbi.nlm.nih.gov/)
 
-The EPA PC (Pesticide Chemical) Code is a unique chemical code number
-assigned by the EPA to a particular pesticide active ingredient, inert
-ingredient or mixture of active ingredients.
+
+
 
 ## Investigating toxic pesticides
+
+
+References that are helpful here:
 
 [start here with chem PC
 code](https://ordspub.epa.gov/ords/pesticides/f?p=chemicalsearch:1)
@@ -1046,16 +1058,15 @@ Information](http://npic.orst.edu/ingred/cheminfo.html)
 
 [glyphosate](https://ordspub.epa.gov/ords/pesticides/f?p=CHEMICALSEARCH:3::::1,3,31,7,12,25:P3_XCHEMICAL_ID:2478)
 
-To
 
-```{r}
+```{r, include=FALSE}
 # View(strwb_census)
 # View(strwb_survey)
 # View(strwb_survey_mkt)
 # View(strwb_survey_chem)
 ```
 
-```{r}
+```{r, include=FALSE}
 unique(strwb_survey_mkt$temp1b)
 unique(strwb_survey_mkt$temp2)
 unique(strwb_survey_mkt$temp3)
@@ -1064,7 +1075,7 @@ unique(strwb_survey_mkt$temp42)
 
 ```
 
-```{r}
+```{r, include=FALSE}
 
 unique(strwb_survey_chem$temp4)
 
@@ -1073,6 +1084,12 @@ unique(strwb_survey_chem$temp23)
 # unique(strwb_survey_chem$temp43)
 
 ```
+
+## Matching processes
+
+### First, I need to match different chemicals' PC codes, CAS numbers and their harm ranks. 
+
+To be more specific,
 
 (1) The numbers following the equals sign in these chemical substance
     records typically represent CAS numbers (Chemical Abstracts Service
@@ -1097,6 +1114,7 @@ Then, In order to match the subsequent PC codes with their corresponding
 CAS numbers, all the PC numbers in the "Data Items" column are first
 extracted into a new separate column variable using regular expressions.
 
+
 ```{r}
 library(dplyr)
 library(writexl)
@@ -1111,15 +1129,13 @@ strwb_survey_chem_CAS <- strwb_survey_chem |>
 # write_xlsx(strwb_survey_chem_CAS, path = "strwb_survey_chem_CAS.xlsx")
 ```
 
-```{r}
-unique(strwb_survey_chem_CAS$Year)
-unique(strwb_survey_chem_CAS$State)
-unique(strwb_survey_chem_CAS$temp23)
-```
 
-Data visualisation was used here to initially explore the use of the
-four main groups of chemicals("FUNGICIDE", "HERBICIDE", "INSECTICIDE",
-"OTHER") in different states in different years:
+
+
+
+## Data visualization about the usage of the four main groups of chemicals
+
+Data visualization was used here to initially explore the use of the four main groups of chemicals("FUNGICIDE", "HERBICIDE", "INSECTICIDE","OTHER") in different states in different years:
 
 (1) Here I created line plots using ggplot2 to visualize the proportion
     of different chemicals usage over time (from 2016 to 2018 to 2019
@@ -1134,6 +1150,13 @@ four main groups of chemicals("FUNGICIDE", "HERBICIDE", "INSECTICIDE",
     set. In other words, the data set we are working with might not
     include information for those states in those specific years,
     resulting in no data points for those combinations."
+
+```{r}
+unique(strwb_survey_chem_CAS$Year)
+unique(strwb_survey_chem_CAS$State)
+unique(strwb_survey_chem_CAS$temp23)
+```
+
 
 ```{r}
 library(ggplot2)
@@ -1151,92 +1174,58 @@ proportion_data <- filtered_data %>%
   ) %>%
   mutate(proportion = round(fungicide_count / total_count, 3))
 
-lineplot1 <- ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
-  geom_line() +
-  geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
-  labs(
-    x = "Year",
-    y = "the proportion",
-    title = "The Proportion of the Utility of Fungicide"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "top")
-lineplot1
-
-states_of_interest <- c("CALIFORNIA", "FLORIDA", "OREGON", "WASHINGTON")
-filtered_data <- strwb_survey_chem_CAS %>%
-  filter(State %in% states_of_interest)
-
-proportion_data <- filtered_data %>%
-  group_by(Year, State) %>%
-  summarise(
-    fungicide_count = sum(temp23 == " HERBICIDE"),
-    total_count = sum(temp23 %in% c(" FUNGICIDE", " HERBICIDE", " INSECTICIDE", " OTHER"))
-  ) %>%
-  mutate(proportion = round(fungicide_count / total_count, 3))
-
-lineplot2 <- ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
-  geom_line() +
-  geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
-  labs(
-    x = "Year",
-    y = "the proportion",
-    title = "The Proportion of the Utility of HERBICIDE"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "top")
-lineplot2
-
-states_of_interest <- c("CALIFORNIA", "FLORIDA", "OREGON", "WASHINGTON")
-filtered_data <- strwb_survey_chem_CAS %>%
-  filter(State %in% states_of_interest)
- 
-proportion_data <- filtered_data %>%
-  group_by(Year, State) %>%
-  summarise(
-    fungicide_count = sum(temp23 == " INSECTICIDE"),
-    total_count = sum(temp23 %in% c(" FUNGICIDE", " HERBICIDE", " INSECTICIDE", " OTHER"))
-  ) %>%
-  mutate(proportion = round(fungicide_count / total_count, 3))
-
-lineplot3 <- ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
-  geom_line() +
-  geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
-  labs(
-    x = "Year",
-    y = "the proportion",
-    title = "The Proportion of the Utility of INSECTICIDE"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "top")
-lineplot3
-
-states_of_interest <- c("CALIFORNIA", "FLORIDA", "OREGON", "WASHINGTON")
-filtered_data <- strwb_survey_chem_CAS %>%
-  filter(State %in% states_of_interest)
-
-# Calculate the count of "FUNGICIDE" and the total count of all chemical types for each combination of "Year" and "State"
-proportion_data <- filtered_data %>%
-  group_by(Year, State) %>%
-  summarise(
-    fungicide_count = sum(temp23 == " OTHER"),
-    total_count = sum(temp23 %in% c(" FUNGICIDE", " HERBICIDE", " INSECTICIDE", " OTHER"))
-  ) %>%
-  mutate(proportion = round(fungicide_count / total_count, 3))
-
-lineplot4 <- ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
-  geom_line() +
-  geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
-  labs(
-    x = "Year",
-    y = "the proportion",
-    title = "The Proportion of the Utility of OTHER"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "top")
-lineplot4
 ```
 
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(gridExtra)
+
+states_of_interest <- c("CALIFORNIA", "FLORIDA", "OREGON", "WASHINGTON")
+
+create_lineplot <- function(temp23_label, title) {
+  filtered_data <- strwb_survey_chem_CAS %>%
+    filter(State %in% states_of_interest)
+  
+  proportion_data <- filtered_data %>%
+    group_by(Year, State) %>%
+    summarise(
+      count = sum(temp23 == temp23_label),
+      total_count = sum(temp23 %in% c(" FUNGICIDE", " HERBICIDE", " INSECTICIDE", " OTHER"))
+    ) %>%
+    mutate(proportion = round(count / total_count, 3))
+  
+  lineplot <- ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
+    geom_line() +
+    geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
+    labs(
+      x = "Year",
+      y = "Proportion",
+      title = title
+    ) +
+    theme_minimal() +
+    theme(legend.position = "top") + # Move the legend to the top
+    guides(color = guide_legend(ncol = 2)) # Adjust the legend to have 2 columns
+    
+  return(lineplot)
+}
+
+lineplot1 <- create_lineplot(" FUNGICIDE", "The Proportion of the Utility of FUNGICIDE")
+lineplot2 <- create_lineplot(" HERBICIDE", "The Proportion of the Utility of HERBICIDE")
+lineplot3 <- create_lineplot(" INSECTICIDE", "The Proportion of the Utility of INSECTICIDE")
+lineplot4 <- create_lineplot(" OTHER", "The Proportion of the Utility of OTHER")
+
+grid.arrange(lineplot1, lineplot2, lineplot3, lineplot4, ncol = 2)
+```
+
+
+
+
+
+
+Here, we could quickly check that there is data missing, definitely.
+And take the 2018 year for an example:
 ```{r}
 desired_year <- 2018
 desired_state <- "OREGON" 
@@ -1264,6 +1253,8 @@ strwb_survey_mkt_grouped <- strwb_survey_mkt |>
 
 # View(strwb_survey_mkt_grouped)
 ```
+
+## Exploring different chemicals' harm ranks
 
 In the following, I will match the PC codes of the chemical substances
 in the existing dataset to their corresponding CAS numbers, and then
@@ -1302,14 +1293,15 @@ strwb_survey_chem_CAS <- merge(strwb_survey_chem_CAS, PCcodes, by = "PCcodes")
 strwb_survey_chem_CAS <- merge(strwb_survey_chem_CAS, cas_and_harm, by = "cas_valid")
 # View(strwb_survey_chem_CAS)
 # write_xlsx(strwb_survey_chem_CAS, path = "data_ with_cas_and_harms.xlsx")
-
-
 ```
+
+
+## Dealing with the missing values
 
 Handling of missing values in the "Value" variable: Calculate the mean
 value of the "Value" variable from valid values other than "(D)" and
-assign this calculated mean value to "(D)", "(NA)" and "(Z)". (Thanks
-for Aidan's inspiration!!! He's an angel and a genius!!!)
+assign this calculated mean value to "(D)", "(NA)" and "(Z)". 
+(Thanks for Aidan's inspiration here!)
 
 ```{r}
 non_numeric_values <- c("(D)", "(NA)", "(Z)")
@@ -1320,15 +1312,45 @@ strwb_survey_chem_CAS$Value <- as.numeric(strwb_survey_chem_CAS$Value)
 strwb_survey_chem_CAS$Value <-round(strwb_survey_chem_CAS$Value, digits = 3)
 
 head(strwb_survey_chem_CAS)
-colnames(strwb_survey_chem_CAS)
-unique(strwb_survey_chem_CAS$harm_rank)
+#colnames(strwb_survey_chem_CAS)
+#unique(strwb_survey_chem_CAS$harm_rank)
+#unique(strwb_survey_chem_CAS$Year)
+#unique(strwb_survey_chem_CAS$State)
 ```
+
+
+
+```{r}
+library(ggplot2)
+ggplot(data = strwb_survey_chem_CAS, aes(x = Year, fill = harm_rank)) +
+  geom_bar(position = "stack") +
+  facet_wrap(~ State) +
+  labs(title = "Chemical Harm Situations by State and Year",
+       x = "Year",
+       y = "Count of Chemical Harm Rank") +
+  scale_fill_manual(values = c("Ib" = "red", "II" = "pink", "III" = "orange", "U" = "yellow")) +
+  theme_classic()
+
+```
+From this, it can be seen that the harm ranks of chemicals used in different states in different years are predominantly II(Moderately hazardous) and U(Unlikely to present acute hazard in normal use.) different years is predominantly level 2 and level 5, which means that the hazards of the chemicals used between 2016 and 2021 are relatively acceptable.
+
+
+
+## Data distributions and regression models
+
+### exploring different states' situations about the harm ranks of chemicals
+
+In addition, although the above analysis of the hazards of chemical substances has been carried out on a granular basis for each chemical substance, there are other factors that may have an impact on the harmlessness of different chemical substances in practice, such as the dosage used, whether strawberries are washed carefully, and so on.
+
+
+
+### explore data in data frame "strwb_survey_chem" and "strwb_survey_mkt"
 
 Here I want to explore data in data frame "strwb_survey_chem",
 especially I'm curious about the relationships among variables like
 "State", "Year", "Value". So I deal with the missing values in column
 "Value" first, then I could try to create some visualization plots and
-fit some models as below.
+fit some models as below. This means that 
 
 ```{r}
 non_numeric_values <- c("(D)", "(NA)", "(Z)")
