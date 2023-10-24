@@ -720,7 +720,6 @@ title ="Organic Strawberry Sales ($) in 2021")
 ## Initial questions:
 
 Initial questions about strawberries, the data, and about the work:
- The questions: 
  
  (1) What is the degree of harmfulness of each chemical, which chemicals are more harmful and which are relatively harmless? 
  
@@ -1180,43 +1179,100 @@ proportion_data <- filtered_data %>%
 ```{r}
 library(ggplot2)
 library(dplyr)
-library(gridExtra)
 
 states_of_interest <- c("CALIFORNIA", "FLORIDA", "OREGON", "WASHINGTON")
+filtered_data <- strwb_survey_chem_CAS %>%
+  filter(State %in% states_of_interest)
 
-create_lineplot <- function(temp23_label, title) {
-  filtered_data <- strwb_survey_chem_CAS %>%
-    filter(State %in% states_of_interest)
-  
-  proportion_data <- filtered_data %>%
-    group_by(Year, State) %>%
-    summarise(
-      count = sum(temp23 == temp23_label),
-      total_count = sum(temp23 %in% c(" FUNGICIDE", " HERBICIDE", " INSECTICIDE", " OTHER"))
-    ) %>%
-    mutate(proportion = round(count / total_count, 3))
-  
-  lineplot <- ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
-    geom_line() +
-    geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
-    labs(
-      x = "Year",
-      y = "Proportion",
-      title = title
-    ) +
-    theme_minimal() +
-    theme(legend.position = "top") + # Move the legend to the top
-    guides(color = guide_legend(ncol = 2)) # Adjust the legend to have 2 columns
-    
-  return(lineplot)
-}
+proportion_data <- filtered_data %>%
+  group_by(Year, State) %>%
+  summarise(
+    fungicide_count = sum(temp23 == " FUNGICIDE"),
+    total_count = sum(temp23 %in% c(" FUNGICIDE", " HERBICIDE", " INSECTICIDE", " OTHER"))
+  ) %>%
+  mutate(proportion = round(fungicide_count / total_count, 3))
 
-lineplot1 <- create_lineplot(" FUNGICIDE", "The Proportion of the Utility of FUNGICIDE")
-lineplot2 <- create_lineplot(" HERBICIDE", "The Proportion of the Utility of HERBICIDE")
-lineplot3 <- create_lineplot(" INSECTICIDE", "The Proportion of the Utility of INSECTICIDE")
-lineplot4 <- create_lineplot(" OTHER", "The Proportion of the Utility of OTHER")
+ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
+  geom_line() +
+  geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
+  labs(
+    x = "Year",
+    y = "the proportion",
+    title = "The Proportion of the Utility of Fungicide"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
 
-grid.arrange(lineplot1, lineplot2, lineplot3, lineplot4, ncol = 2)
+states_of_interest <- c("CALIFORNIA", "FLORIDA", "OREGON", "WASHINGTON")
+filtered_data <- strwb_survey_chem_CAS %>%
+  filter(State %in% states_of_interest)
+
+proportion_data <- filtered_data %>%
+  group_by(Year, State) %>%
+  summarise(
+    fungicide_count = sum(temp23 == " HERBICIDE"),
+    total_count = sum(temp23 %in% c(" FUNGICIDE", " HERBICIDE", " INSECTICIDE", " OTHER"))
+  ) %>%
+  mutate(proportion = round(fungicide_count / total_count, 3))
+
+ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
+  geom_line() +
+  geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
+  labs(
+    x = "Year",
+    y = "the proportion",
+    title = "The Proportion of the Utility of HERBICIDE"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+states_of_interest <- c("CALIFORNIA", "FLORIDA", "OREGON", "WASHINGTON")
+filtered_data <- strwb_survey_chem_CAS %>%
+  filter(State %in% states_of_interest)
+
+proportion_data <- filtered_data %>%
+  group_by(Year, State) %>%
+  summarise(
+    fungicide_count = sum(temp23 == " INSECTICIDE"),
+    total_count = sum(temp23 %in% c(" FUNGICIDE", " HERBICIDE", " INSECTICIDE", " OTHER"))
+  ) %>%
+  mutate(proportion = round(fungicide_count / total_count, 3))
+
+ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
+  geom_line() +
+  geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
+  labs(
+    x = "Year",
+    y = "the proportion",
+    title = "The Proportion of the Utility of INSECTICIDE"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+states_of_interest <- c("CALIFORNIA", "FLORIDA", "OREGON", "WASHINGTON")
+filtered_data <- strwb_survey_chem_CAS %>%
+  filter(State %in% states_of_interest)
+
+proportion_data <- filtered_data %>%
+  group_by(Year, State) %>%
+  summarise(
+    fungicide_count = sum(temp23 == " OTHER"),
+    total_count = sum(temp23 %in% c(" FUNGICIDE", " HERBICIDE", " INSECTICIDE", " OTHER"))
+  ) %>%
+  mutate(proportion = round(fungicide_count / total_count, 3))
+
+lineplot4 <- ggplot(proportion_data, aes(x = Year, y = proportion, color = State)) +
+  geom_line() +
+  geom_point(aes(label = sprintf("%.3f", proportion)), size = 3) +
+  labs(
+    x = "Year",
+    y = "the proportion",
+    title = "The Proportion of the Utility of OTHER"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "top")
+lineplot4
+
 ```
 
 
